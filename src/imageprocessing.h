@@ -17,6 +17,9 @@ public:
 	void contrastImage(char **argv);
 	void saltPepper(char **argv);
 	void binary(char **argv);
+	void meanBlur(char **argv);
+	void edge(char **argv);
+
 };
 
 #endif

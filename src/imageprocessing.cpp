@@ -280,3 +280,329 @@ void Imageprocessing::binary(char **argv){
 	fwrite(this->Output,1,this->totalPixels,fpOut);
 	cout<<"Wrote the image into "<<argv[2]<<"\n";
 }
+
+void Imageprocessing::meanBlur(char **argv){
+	FILE * fpOut;
+
+
+	fpOut = fopen(argv[2], "wb");
+	if(fpOut == NULL){
+		cerr<<"Error while writing the image"<<argv[2]<<"\n";
+	}
+
+    float level  = stoi(argv[3]);
+
+    if (level==3)
+    {
+		float kernel[3][3];
+    	float mean[3][3] = {1/9.0,1/9.0,1/9.0,
+    						1/9.0,1/9.0,1/9.0,
+    						1/9.0,1/9.0,1/9.0};
+
+		for (int ky = 0; ky <=2; ky++)
+		{
+			for (int kx = 0; kx <=2; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -1; ky <= 1; ky++)
+				{
+					for (int kx = -1; kx <= 1; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+
+    }else if(level == 7){
+
+    	float kernel[7][7];
+    	float mean[7][7] = {0.0,	0.0,	0.0,	1/25.0,	0.0,	0.0,	0.0,
+    						0.0,	0.0,	1/25.0,	1/25.0,	1/25.0,	0.0,	0.0,
+    						0.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	0.0,
+    						1/25.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,
+    						0.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	1/25.0,	0.0,
+    						0.0,	0.0,	1/25.0,	1/25.0,	1/25.0,	0.0,	0.0,
+    						0.0,	0.0,	0.0,	1/25.0,	0.0,	0.0,	0.0,
+    						};
+
+		for (int ky = 0; ky <=6; ky++)
+		{
+			for (int kx = 0; kx <=6; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				//cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -3; ky <= 3; ky++)
+				{
+					for (int kx = -3; kx <= 3; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+    }else if(level == 77){
+    	
+    	float kernel[7][7];
+    	float mean[7][7] = {1/140.0,1/140.0,2/140.0,	2/140.0,	2/140.0,1/140.0,1/140.0,
+    						1/140.0,2/140.0,2/140.0,	4/140.0,	2/140.0,2/140.0,1/140.0,
+    						2/140.0,2/140.0,4/140.0,	8/140.0,	4/140.0,2/140.0,2/140.0,
+    						2/140.0,4/140.0,8/140.0,	16/140.0,	8/140.0,4/140.0,2/140.0,
+    						2/140.0,2/140.0,4/140.0,	8/140.0,	4/140.0,2/140.0,2/140.0,
+    						1/140.0,2/140.0,2/140.0,	4/140.0,	2/140.0,2/140.0,1/140.0,
+    						1/140.0,1/140.0,2/140.0,	2/140.0,	2/140.0,1/140.0,1/140.0
+    						};
+
+		for (int ky = 0; ky <=6; ky++)
+		{
+			for (int kx = 0; kx <=6; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				//cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -3; ky <= 3; ky++)
+				{
+					for (int kx = -3; kx <= 3; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+    }else{
+    	cerr<<"Error while reading the argument";
+    }
+
+    // Changing the pixel values by interchanging the location. 
+		
+
+
+	// saving the data to a .pgm format file.	
+	fprintf(fpOut, "P%d\n%d %d\n%d\n",this->header,this->numberOfColumns, this->numberOfRows, this->highVal );
+	fwrite(this->Output,1,this->totalPixels,fpOut);
+	cout<<"Wrote the image into "<<argv[2]<<"\n";
+}
+
+void Imageprocessing::edge(char **argv){
+
+	// There are threew main edge filters are giving below.
+	// 1. gaussian filter,
+	// 21. sobel horizontal,
+	// 22. sobel vertical,
+	// 31. prewitte horizontal,
+	// 32. prewitte vertical,
+
+	FILE * fpOut;
+
+
+	fpOut = fopen(argv[2], "wb");
+	if(fpOut == NULL){
+		cerr<<"Error while writing the image"<<argv[2]<<"\n";
+	}
+
+    float level  = stoi(argv[3]);
+
+    if (level== 1)
+    {
+		float kernel[7][7];
+    	float mean[7][7] = {-1/140.0,-1/140.0,-2/140.0,	0.0,	2/140.0,1/140.0,1/140.0,
+    						-1/140.0,-2/140.0,-2/140.0,	0.0,	2/140.0,2/140.0,1/140.0,
+    						-2/140.0,-2/140.0,-4/140.0,	0.0,	4/140.0,2/140.0,2/140.0,
+    						-2/140.0,-4/140.0,-8/140.0,	0.0,	8/140.0,4/140.0,2/140.0,
+    						-2/140.0,-2/140.0,-4/140.0,	0.0,	4/140.0,2/140.0,2/140.0,
+    						-1/140.0,-2/140.0,-2/140.0,	0.0,	2/140.0,2/140.0,1/140.0,
+    						-1/140.0,-1/140.0,-2/140.0,	0.0,	2/140.0,1/140.0,1/140.0
+    						};
+
+		for (int ky = 0; ky <=6; ky++)
+		{
+			for (int kx = 0; kx <=6; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				//cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -3; ky <= 3; ky++)
+				{
+					for (int kx = -3; kx <= 3; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+    }else if(level == 21){
+
+
+    	float kernel[3][3];
+    	float mean[3][3] = {-1.0,	-2.0,	 -1.0,
+    						0.0,	0.0,	 0.0,
+    						1.0,	2.0,	 1.0};
+
+		for (int ky = 0; ky <=2; ky++)
+		{
+			for (int kx = 0; kx <=2; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -1; ky <= 1; ky++)
+				{
+					for (int kx = -1; kx <= 1; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+	}else if(level == 22){
+
+
+    	float kernel[3][3];
+    	float mean[3][3] = {-1.0,	0.0,	 -1.0,
+    						-2.0,	0.0,	 -2.0,
+    						-1.0,	0.0,	 -1.0};
+
+		for (int ky = 0; ky <=2; ky++)
+		{
+			for (int kx = 0; kx <=2; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -1; ky <= 1; ky++)
+				{
+					for (int kx = -1; kx <= 1; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+	}else if(level == 31){
+
+
+    	float kernel[3][3];
+    	float mean[3][3] = {-1.0,	-1.0,	 -1.0,
+    						0.0,	0.0,	 0.0,
+    						1.0,	1.0,	 1.0};
+
+		for (int ky = 0; ky <=2; ky++)
+		{
+			for (int kx = 0; kx <=2; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -1; ky <= 1; ky++)
+				{
+					for (int kx = -1; kx <= 1; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}
+
+	}else if(level == 32){
+
+
+    	float kernel[3][3];
+    	float mean[3][3] = {-1.0,	0.0,	 -1.0,
+    						-1.0,	0.0,	 -1.0,
+    						-1.0,	0.0,	 -1.0};
+
+		for (int ky = 0; ky <=2; ky++)
+		{
+			for (int kx = 0; kx <=2; kx++)
+			{
+				kernel[ky][kx] = mean[ky][kx];
+				cout<<"Kernel is"<<kernel[ky][kx];
+
+			}
+		}
+
+		for (int y = 0; y < this->numberOfRows; y++)
+		{
+			for (int x = 0; x < this->numberOfColumns; x++)
+			{
+				for (int ky = -1; ky <= 1; ky++)
+				{
+					for (int kx = -1; kx <= 1; kx++)
+					{
+						this->Output[y*this->numberOfColumns+x] += this->Image[(y+ky)*this->numberOfColumns+(x+kx)] * kernel[ky+1][kx+1];
+					}
+				}
+			}
+		}		
+
+    }else {
+    	cerr<<"Error while reading the argument";
+    }
+
+    // Changing the pixel values by interchanging the location. 
+		
+
+
+	// saving the data to a .pgm format file.	
+	fprintf(fpOut, "P%d\n%d %d\n%d\n",this->header,this->numberOfColumns, this->numberOfRows, this->highVal );
+	fwrite(this->Output,1,this->totalPixels,fpOut);
+	cout<<"Wrote the image into "<<argv[2]<<"\n";
+}

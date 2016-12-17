@@ -18,7 +18,9 @@ int main(int argc, char **argv){
 	// m.brightImage(argv);
 	//m.contrastImage(argv);
 	//m.saltPepper(argv);
-	m.binary(argv);
+	// m.binary(argv);
+	// m.meanBlur(argv);
+	m.edge(argv);
 	return 0;
 	
 }
