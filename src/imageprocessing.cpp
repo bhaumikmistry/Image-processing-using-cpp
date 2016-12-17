@@ -142,6 +142,8 @@ void Imageprocessing::mirrorImage(char **argv){
 }
 
 // It is used to increase the brightness of the Image
+// The amount of brightness to increase is given in the 
+// command line, which can be between 0 tp 100.
 void Imageprocessing::brightImage(char **argv){
 	FILE * fpOut;
 
@@ -170,6 +172,7 @@ void Imageprocessing::brightImage(char **argv){
 	cout<<"Wrote the image into "<<argv[2]<<"\n";
 }
 
+// This funtion is called tp increase the contr
 void Imageprocessing::contrastImage(char **argv){
 	FILE * fpOut;
 
@@ -206,3 +209,40 @@ void Imageprocessing::contrastImage(char **argv){
 	fwrite(this->Output,1,this->totalPixels,fpOut);
 	cout<<"Wrote the image into "<<argv[2]<<"\n";
 }
+
+// void Imageprocessing::contrastImage(char **argv){
+// 	FILE * fpOut;
+
+
+// 	fpOut = fopen(argv[2], "wb");
+// 	if(fpOut == NULL){
+// 		cerr<<"Error while writing the image"<<argv[2]<<"\n";
+// 	}
+//     float newContrast  = stoi(argv[3]);
+//     float contrast = 0.0f;
+//     float newPixels = 0.0f;
+//     if(newContrast > 100) newContrast = 100;
+//     if(newContrast < 0) newContrast = 0;
+//     cout<<"newContrast incresed by "<<newContrast<<endl;
+
+//     // Changing the pixel values by interchanging the location. 
+// 	for (int y = 0; y < this->totalPixels; y++)
+// 	{
+// 		contrast = (100.0+newContrast)/100.0;
+// 		contrast *= contrast;
+
+// 		newPixels = (this->Image[y])/255.0;
+// 		newPixels -= 0.5;
+// 		newPixels *= contrast;
+// 		newPixels += 0.5;
+// 		newPixels *= 255;
+// 		if(newPixels > 255) newPixels = 255;
+// 		if(newPixels < 0) newPixels = 0;		
+// 		this->Output[y] = newPixels;
+// 	}
+
+// 	// saving the data to a .pgm format file.	
+// 	fprintf(fpOut, "P%d\n%d %d\n%d\n",this->header,this->numberOfColumns, this->numberOfRows, this->highVal );
+// 	fwrite(this->Output,1,this->totalPixels,fpOut);
+// 	cout<<"Wrote the image into "<<argv[2]<<"\n";
+// }

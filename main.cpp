@@ -18,5 +18,5 @@ int main(int argc, char **argv){
 	// m.brightImage(argv);
 	m.contrastImage(argv);
 	return 0;
-	hi
+	
 }
