@@ -16,7 +16,9 @@ int main(int argc, char **argv){
 	// m.invertImage(argv);
 	// m.mirrorImage(argv);
 	// m.brightImage(argv);
-	m.contrastImage(argv);
+	//m.contrastImage(argv);
+	//m.saltPepper(argv);
+	m.binary(argv);
 	return 0;
 	
 }

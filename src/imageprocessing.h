@@ -15,6 +15,8 @@ public:
 	void mirrorImage(char **argv);
 	void brightImage(char **argv);
 	void contrastImage(char **argv);
+	void saltPepper(char **argv);
+	void binary(char **argv);
 };
 
 #endif
